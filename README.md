@@ -4,10 +4,18 @@
 
 TODO: Integrate into regular Ansible upgrade job
 
+
 ### Pull latest ESPHome image
 
 ```
 $ docker pull esphome/esphome:latest
+```
+
+### Modify secrets file
+
+```
+$ cp secrets.example.yaml secrets.yaml
+$ vi secrets.yaml
 ```
 
 ### Build
