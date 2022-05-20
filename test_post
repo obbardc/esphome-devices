@@ -1,0 +1,22 @@
+#!/bin/sh
+
+echo "turning on..."
+
+# TODO test for 200 OK
+curl -v \
+  -X POST \
+  --digest \
+  --user admin:web \
+  http://pdu-s20-0001/switch/relay/turn_on
+
+sleep 5
+
+
+echo "turning off..."
+
+# TODO test for 200 OK
+curl -v \
+  -X POST \
+  --digest \
+  --user admin:web \
+  http://pdu-s20-0001/switch/relay/turn_off

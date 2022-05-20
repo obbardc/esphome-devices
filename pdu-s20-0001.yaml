@@ -1,0 +1,5 @@
+substitutions:
+  name: pdu-s20-0001
+  comment: PDU-S20-0001
+
+<<: !include pdu-sonoff-s2x.yaml

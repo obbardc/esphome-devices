@@ -1,0 +1,44 @@
+# Sonoff S20 PDU firmware
+# https://esphome.io/devices/sonoff_s20.html
+#
+# The S26 uses the exact same pinout
+
+<<: !include base.yaml
+esphome:
+  name: ${name}
+  comment: ${comment}
+  platform: ESP8266
+  board: sonoff_s20
+
+binary_sensor:
+  - name: "Power Button"
+    id: power_button
+    platform: gpio
+    pin:
+      number: GPIO0
+      mode: INPUT_PULLUP
+      inverted: true
+
+    # Hook up button press to toggle relay on/off
+    on_press:
+      then:
+        - switch.toggle: relay
+
+switch:
+  - name: "Relay"
+    id: relay
+    platform: gpio
+    pin: GPIO12
+    restore_mode: ALWAYS_OFF
+
+output:
+  - id: led
+    platform: gpio
+    pin:
+      number: GPIO13
+      inverted: true
+
+light:
+  - name: "LED"
+    platform: binary
+    output: led
