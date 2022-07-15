@@ -1,10 +1,10 @@
 # Basics which should be included in all devices
 
 # TODO if no client connects to the api after 15m the device reboots ?
-#api:
-#  password: !secret api_password
-#  encryption:
-#    key: !secret api_encryption_key
+api:
+  #password: !secret api_password
+  #encryption:
+  #  key: !secret api_encryption_key
 
 mqtt:
   broker: labgrid-exporter-0001
