@@ -1,5 +1,6 @@
 substitutions:
   name: pdu-s26-0004
   comment: PDU-S26-0004
+  id: pdu_s26_0004
 
 <<: !include pdu-sonoff-s2x.yaml

@@ -11,8 +11,8 @@ esphome:
   board: sonoff_s20
 
 binary_sensor:
-  - name: "Power Button"
-    id: power_button
+  - name: "${comment} Power Button"
+    id: ${id}_power_button
     platform: gpio
     pin:
       number: GPIO0
@@ -22,23 +22,23 @@ binary_sensor:
     # Hook up button press to toggle relay on/off
     on_press:
       then:
-        - switch.toggle: relay
+        - switch.toggle: ${id}_relay
 
 switch:
-  - name: "Relay"
-    id: relay
+  - name: "${comment} Relay"
+    id: ${id}_relay
     platform: gpio
     pin: GPIO12
     restore_mode: ALWAYS_OFF
 
 output:
-  - id: led
+  - id: ${id}_led
     platform: gpio
     pin:
       number: GPIO13
       inverted: true
 
 light:
-  - name: "LED"
+  - name: "${comment} LED"
     platform: binary
-    output: led
+    output: ${id}_led
