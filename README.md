@@ -3,7 +3,7 @@
 ### Improvements
 
 TODO: Integrate into regular Ansible upgrade job
-
+TODO: Add password to captive portals
 
 ### Pull latest ESPHome image
 
@@ -64,6 +64,6 @@ esphome:
   name: pdu-s26-0001
 
 wifi:
-  # Old hostname
+  # Old hostname OR the device's IP address
   use_address: lava-pdu-s26-0001
 ```
