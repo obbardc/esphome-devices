@@ -8,6 +8,7 @@ api:
 
 mqtt:
   broker: labgrid-exporter-0001
+  reboot_timeout: 0s
   # TODO username, password & encryption
   #username: livingroom
   #password: !secret mqtt_password
