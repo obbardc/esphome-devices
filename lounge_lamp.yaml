@@ -1,0 +1,53 @@
+# Sonoff Basic lamp firmware
+# Pressing the button toggles the lamp status
+
+<<: !include base.yaml
+
+substitutions:
+  name: lounge-lamp
+  comment: Lounge Lamp
+  id: lounge_lamp
+
+esphome:
+  name: ${name}
+  comment: ${comment}
+  platform: ESP8266
+  board: sonoff_s20
+
+binary_sensor:
+  # Onboard button
+  - platform: gpio
+    id: "${id}_button"
+    pin:
+      number: GPIO0
+      mode: INPUT_PULLUP
+      inverted: True
+    name: "${name} Button"
+    on_press:
+      - switch.toggle: ${id}_relay
+
+  # External switch
+  - platform: gpio
+    id: "${id}_switch"
+    pin:
+      number: GPIO14
+      mode: INPUT_PULLUP
+      inverted: True
+    name: "${name} Switch"
+    filters:
+      - delayed_on_off: 200ms
+    on_press:
+      - switch.toggle: ${id}_relay
+    on_release:
+      - switch.toggle: ${id}_relay
+
+switch:
+  - platform: gpio
+    id: ${id}_relay
+    name: "${name}"
+    pin: GPIO12
+
+status_led:
+  pin:
+    number: GPIO13
+    inverted: yes
