@@ -15,25 +15,27 @@ esphome:
   board: sonoff_s20
 
 binary_sensor:
-  # Onboard button
+  # Onboard button (not exposed)
   - platform: gpio
     id: "${id}_button"
+    name: "${name} Button"
+    internal: true
     pin:
       number: GPIO0
       mode: INPUT_PULLUP
       inverted: True
-    name: "${name} Button"
     on_press:
       - switch.toggle: ${id}_relay
 
-  # External switch
+  # External switch (not exposed)
   - platform: gpio
     id: "${id}_switch"
+    name: "${name} Switch"
+    internal: true
     pin:
       number: GPIO14
       mode: INPUT_PULLUP
       inverted: True
-    name: "${name} Switch"
     filters:
       - delayed_on_off: 200ms
     on_press:
