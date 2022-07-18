@@ -1,0 +1,26 @@
+# Sonoff POW PDU firmware
+
+<<: !include pdu-sonoff-s2x.yaml
+
+# Disable logging over USB
+logger:
+  baud_rate: 0
+
+uart:
+  rx_pin: RX
+  baud_rate: 4800
+
+sensor:
+  - platform: cse7766
+    current:
+      name: "${comment} Current"
+      id: ${id}_current
+    voltage:
+      name: "${comment} Voltage"
+      id: ${id}_voltage
+    power:
+      name: "${comment} Power"
+      id: ${id}_power
+    energy:
+      name: "${comment} Energy"
+      id: ${id}_energy

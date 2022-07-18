@@ -1,0 +1,6 @@
+substitutions:
+  name: pdu-pow-0001
+  comment: PDU-POW-0001
+  id: pdu_pow_0001
+
+<<: !include pdu-sonoff-pow.yaml
