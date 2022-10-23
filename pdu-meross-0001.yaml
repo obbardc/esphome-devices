@@ -1,0 +1,8 @@
+# MAC: 68:c6:3a:a7:8b:36
+
+substitutions:
+  name: pdu-meross-0001
+  comment: PDU-Meross-0001
+  id: pdu_meross_0001
+
+<<: !include pdu-meross-6w.yaml
