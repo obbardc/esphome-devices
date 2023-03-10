@@ -41,6 +41,7 @@ $ docker run -it \
   --device=/dev/ttyUSB0 \
   esphome/esphome:latest \
   run \
+  --device=/dev/ttyUSB0 \
   pdu-s26-0001.yaml
 ```
 

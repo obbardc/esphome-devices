@@ -12,12 +12,25 @@ ota:
   password: !secret ota_password
 
 wifi:
-  ssid: !secret wifi_ssid
-  password: !secret wifi_password
-  power_save_mode: light
-  output_power: 10dB
+  networks:
+  # Highest priority network is chosen first
+  - ssid: !secret wifi_ssid
+    password: !secret wifi_password
+    priority: 1000
+  #- ssid: !secret wifi_backup_ssid
+  #  password: !secret wifi_backup_password
+  #  priority: 1000000
+
+  # TODO use substitutions
+  #power_save_mode: light
+  #power_save_mode: ${power_save_mode}
+  power_save_mode: none
+  #output_power: 10dB
+  #output_power: ${output_power}
+  output_power: 20dB
   ap:
     password: !secret wifi_ap_password
+
 captive_portal:
 
 web_server:
