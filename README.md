@@ -20,10 +20,16 @@ $ vi secrets.yaml
 
 ### Build
 
+May need to remove cache from previous runs:
+
+```
+$ rm -rf .esphome
+```
+
 ```
 $ docker run -it \
   --rm \
-  -v "${PWD}":/config \
+  -v "$(pwd)":/config \
   esphome/esphome:latest \
   compile \
   pdu-sonoff-s20.yaml
@@ -37,7 +43,7 @@ serial:
 ```
 $ docker run -it \
   --rm \
-  -v "${PWD}":/config \
+  -v "$(pwd)":/config \
   --device=/dev/ttyUSB0 \
   esphome/esphome:latest \
   run \
@@ -50,7 +56,7 @@ $ docker run -it \
 ```
 $ docker run -it \
   --rm \
-  -v "${PWD}":/config \
+  -v "$(pwd)":/config \
   --net=host \
   esphome/esphome:latest \
   run \
