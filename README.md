@@ -1,9 +1,9 @@
-# pdu-esphome
+# esphome-devices
 
-### Improvements
+My [ESPHome](https://github.com/esphome) device configurations!
 
-TODO: Integrate into regular Ansible upgrade job
-TODO: Add password to captive portals
+
+## Building
 
 ### Pull latest ESPHome image
 
