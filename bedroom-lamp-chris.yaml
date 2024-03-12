@@ -1,0 +1,56 @@
+# Sonoff Basic lamp firmware
+# Pressing the button toggles the lamp status
+
+<<: !include base.yaml
+
+substitutions:
+  name: bedroom-lamp-chris
+  comment: Bedroom Lamp Chris
+  id: bedroom_lamp_chris
+
+esphome:
+  name: ${name}
+  comment: ${comment}
+  platform: ESP8266
+  board: sonoff_s20
+
+binary_sensor:
+  # Onboard button (not exposed)
+  - platform: gpio
+    id: "${id}_button"
+    name: "${name} Button"
+    internal: true
+    pin:
+      number: GPIO0
+      mode: INPUT_PULLUP
+      inverted: True
+    on_press:
+      - switch.toggle: ${id}_relay
+
+  # External switch (not exposed)
+  - platform: gpio
+    id: "${id}_switch"
+    name: "${name} Switch"
+    internal: true
+    pin:
+      # Sonoff Basic R3 has pullup on this pin
+      number: GPIO16
+      mode: INPUT
+      inverted: True
+    filters:
+      - delayed_on_off: 200ms
+    on_press:
+      - switch.toggle: ${id}_relay
+    on_release:
+      - switch.toggle: ${id}_relay
+
+switch:
+  - platform: gpio
+    id: ${id}_relay
+    name: "${name}"
+    pin: GPIO12
+
+status_led:
+  pin:
+    number: GPIO13
+    inverted: yes
