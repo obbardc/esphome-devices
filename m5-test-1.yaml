@@ -1,0 +1,6 @@
+substitutions:
+  name: m5-test-1
+  comment: M5 Test 1
+  id: m5_test_1
+
+<<: !include m5stickc-plus.yaml
