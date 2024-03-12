@@ -1,0 +1,91 @@
+# Meross 4-Way PDU firmware
+#
+# Mods required:
+# - Remove the QCWiFi module and fit a TYWE3S (maybe an ESP-12E or ESP-12F will fit?)
+# - Pull pin 3 (EN) to 3v3
+# - Connect pin 2 (ADC; Q4 base) to pin 14 (GPIO5)
+# 
+# Bugs / issues:
+# - With gpio restore_mode set to RESTORE_DEFAULT_OFF; the relays oscillate
+#   at power on a few times so it's currently set to RESTORE_OFF (i.e. all relays
+#   off at boot).
+
+<<: !include base.yaml
+
+esphome:
+  name: ${name}
+  comment: ${comment}
+
+esp8266:
+  board: esp01_1m
+
+binary_sensor:
+  - name: "${comment} Button"
+    id: ${id}_button
+    platform: gpio
+    pin:
+      number: GPIO14
+      mode: INPUT
+      inverted: true
+    filters:
+      - delayed_on: 20ms
+    # Turn all of the relays on/off when the button is released
+    # TODO Short delay between turning each relay on/off; bit noisy. Not too bad on the 4 way...
+    on_press:
+      lambda: |-
+        static bool all_enabled = false;
+
+        all_enabled = !all_enabled;
+        ESP_LOGD("main", "All relays turned %s", all_enabled ? "ON" : "OFF");
+
+        if (all_enabled) {
+          id(${id}_relay_1).turn_on();
+          id(${id}_relay_2).turn_on();
+          id(${id}_relay_3).turn_on();
+          id(${id}_relay_4).turn_on();
+        } else {
+          id(${id}_relay_1).turn_off();
+          id(${id}_relay_2).turn_off();
+          id(${id}_relay_3).turn_off();
+          id(${id}_relay_4).turn_off();
+        }
+
+switch:
+  - name: "${comment} Relay 1"
+    id: ${id}_relay_1
+    platform: gpio
+    pin: GPIO13
+    restore_mode: ALWAYS_OFF
+
+  - name: "${comment} Relay 2"
+    id: ${id}_relay_2
+    platform: gpio
+    pin: GPIO12
+    restore_mode: ALWAYS_OFF
+
+  - name: "${comment} Relay 3"
+    id: ${id}_relay_3
+    platform: gpio
+    pin: GPIO15
+    restore_mode: ALWAYS_OFF
+
+  - name: "${comment} Relay 4"
+    id: ${id}_relay_4
+    platform: gpio
+    pin: GPIO5
+    restore_mode: ALWAYS_OFF
+
+output:
+  - id: ${id}_led
+    platform: gpio
+    pin:
+      number: GPIO4
+      inverted: true
+
+light:
+  - name: "${comment} LED"
+    id: ${id}_LED
+    platform: binary
+    output: ${id}_led
+    # Turn LED on at boot to signify that power is connected
+    restore_mode: ALWAYS_ON

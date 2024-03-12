@@ -1,0 +1,8 @@
+# MAC: todo
+
+substitutions:
+  name: pdu-meross-0002
+  comment: PDU-Meross-0002
+  id: pdu_meross_0002
+
+<<: !include pdu-meross-4w.yaml
