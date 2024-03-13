@@ -3,11 +3,4 @@ substitutions:
   comment: PDU-S26-0002
   id: pdu_s26_0002
 
-mqtt:
-  broker: labgrid-exporter-0001
-  reboot_timeout: 0s
-  # TODO username, password & encryption
-  #username: livingroom
-  #password: !secret mqtt_password
-
 <<: !include pdu-sonoff-s2x.yaml
