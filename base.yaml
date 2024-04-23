@@ -13,13 +13,17 @@ ota:
 
 wifi:
   networks:
-  # Highest priority network is chosen first
+  # Highest priority network is chosen first; e.g backup SSID is first.
+  #
+  # WARNING: each failed connection reduces the priority of that SSID by 1
+  # before retrying the next highest priority - this can take a while if
+  # priorities are high - each failed connection can take ~1s.
   - ssid: !secret wifi_ssid
     password: !secret wifi_password
     priority: 1000
   - ssid: !secret wifi_backup_ssid
     password: !secret wifi_backup_password
-    priority: 1000000
+    priority: 1010
 
   # TODO use substitutions
   #power_save_mode: light
@@ -29,6 +33,7 @@ wifi:
   #output_power: ${output_power}
   output_power: 20dB
   ap:
+    # captive portal password
     password: !secret wifi_ap_password
 
 captive_portal:
