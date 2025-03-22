@@ -35,6 +35,13 @@ $ docker run -it \
   pdu-sonoff-s20.yaml
 ```
 
+### Upload over OTA using web interface
+
+The built firmware for OTA is located under:
+```
+.esphome/build/<name>/.pioenvs/<name>/firmware.ota.bin
+```
+
 ### Upload over serial
 
 Press the device button, apply power then run the following command to flash over
