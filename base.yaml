@@ -12,6 +12,10 @@ ota:
   - platform: esphome
     password: !secret ota_password
 
+time:
+  - platform: homeassistant
+    timezone: !secret timezone
+
 wifi:
   networks:
   # Highest priority network is chosen first; e.g backup SSID is first.
