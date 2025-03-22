@@ -8,7 +8,7 @@ My [ESPHome](https://github.com/esphome) device configurations!
 ### Pull latest ESPHome image
 
 ```
-$ docker pull esphome/esphome:latest
+$ docker pull docker.io/esphome/esphome:latest
 ```
 
 ### Modify secrets file
@@ -30,7 +30,7 @@ $ rm -rf .esphome
 $ docker run -it \
   --rm \
   -v "$(pwd)":/config \
-  esphome/esphome:latest \
+  docker.io/esphome/esphome:latest \
   compile \
   pdu-sonoff-s20.yaml
 ```
@@ -45,7 +45,7 @@ $ docker run -it \
   --rm \
   -v "$(pwd)":/config \
   --device=/dev/ttyUSB0 \
-  esphome/esphome:latest \
+  docker.io/esphome/esphome:latest \
   run \
   --device=/dev/ttyUSB0 \
   pdu-s26-0001.yaml
@@ -58,7 +58,7 @@ $ docker run -it \
   --rm \
   -v "$(pwd)":/config \
   --net=host \
-  esphome/esphome:latest \
+  docker.io/esphome/esphome:latest \
   run \
   pdu-s26-0001.yaml
 ```
