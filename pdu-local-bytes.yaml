@@ -1,0 +1,186 @@
+# Local Bytes Power Monitoring Plug firmware
+#
+# mainly copied from https://github.com/JamesSwift/localbytes-plug-pm/blob/main/minimal.yaml
+# at commit a52888c3187f7afae7e8fe2fbd2038a26debf452
+
+<<: !include base.yaml
+
+esphome:
+  name: ${name}
+  comment: ${comment}
+
+esp8266:
+  board: esp01_1m
+  restore_from_flash: true
+  early_pin_init: false
+
+# TODO: find way to set this
+#wifi:
+#  power_save_mode: high
+
+globals:
+  - id: ${id}_voltage_multiply
+    type: float
+    restore_value: true
+    initial_value: "0.3"
+
+  - id: ${id}_power_multiply
+    type: float
+    restore_value: true
+    initial_value: "0.133"
+
+  - id: ${id}_current_multiply
+    type: float
+    restore_value: true
+    initial_value: "0.805"
+
+  - id: ${id}_setupComplete
+    type: bool
+    restore_value: no
+    initial_value: "false"
+  
+binary_sensor:
+  # Push Button (Toggles Relay When Pressed)
+  - platform: gpio
+    pin:
+      number: GPIO3
+      mode: INPUT_PULLUP
+      inverted: true
+    name: "${comment} Button"
+    on_click:
+      - max_length: 1s
+        then:
+          switch.toggle: ${id}_relay
+
+  - platform: status
+    name: "${comment} Server Status"
+
+switch:
+  # Relay (As Switch)
+  - platform: gpio
+    name: "${comment} Relay"
+    icon: "mdi:toggle-switch"
+    pin: GPIO14
+    id: ${id}_relay
+    # todo: check restore_mode
+    restore_mode: ALWAYS_OFF
+    on_turn_on:
+      - light.turn_on: ${id}_led
+    on_turn_off:
+      - light.turn_off: ${id}_led
+
+sensor:
+  # WiFi Signal Sensor
+  - platform: wifi_signal
+    name: "${comment} WiFi Status"
+    update_interval: 60s
+
+  # Power Monitoring
+  - platform: hlw8012
+    id: ${id}_power_monitor
+    sel_pin:
+      number: GPIO12
+      inverted: true
+    cf_pin: GPIO4
+    cf1_pin: GPIO5
+    update_interval: 10s
+    
+    voltage:
+      name: "${comment} Voltage"
+      id: ${id}_voltage
+      unit_of_measurement: V
+      accuracy_decimals: 1
+      filters:
+        - lambda: return x * id(${id}_voltage_multiply);
+        
+    power:
+      name: "${comment} Power"
+      id: ${id}_power
+      unit_of_measurement: W
+      accuracy_decimals: 0
+      filters:
+        - lambda: return x * id(${id}_power_multiply);
+        
+    current:
+      name: "${comment} Current"
+      id: ${id}_current
+      unit_of_measurement: A
+      accuracy_decimals: 3
+      filters:
+        - lambda: return x * id(${id}_current_multiply);
+          
+  # Total daily energy sensor
+  - platform: total_daily_energy
+    name: "${comment} Daily Energy"
+    device_class: energy
+    power_id: ${id}_power
+    filters:
+      # Multiplication factor from W to kW is 0.001
+      - multiply: 0.001
+    unit_of_measurement: kWh
+
+# Make calibration factor data readable/set-able from home assistant
+number:
+  - platform: template
+    name: "${comment} Voltage Calibration Factor"
+    id: ${id}_voltage_factor
+    icon: "mdi:sine-wave"
+    min_value: 0
+    max_value: 10
+    step: 0.001
+    entity_category: diagnostic
+    mode: box
+    lambda: |-
+      return id(${id}_voltage_multiply);
+    set_action:
+      lambda: |-
+        id(${id}_voltage_multiply) = x;
+
+  - platform: template
+    name: "${comment} Power Calibration Factor"
+    id: ${id}_power_factor
+    icon: "mdi:flash"
+    min_value: 0
+    max_value: 10
+    step: 0.001
+    entity_category: diagnostic
+    mode: box
+    lambda: |-
+      return id(${id}_power_multiply);
+    set_action:
+      lambda: |-
+        id(${id}_power_multiply) = x;
+
+  - platform: template
+    name: "${comment} Current Calibration Factor"
+    id: ${id}_current_factor
+    icon: "mdi:current-ac"
+    min_value: 0
+    max_value: 10
+    step: 0.001
+    entity_category: diagnostic
+    mode: box
+    lambda: |-
+      return id(${id}_current_multiply);
+    set_action:
+      lambda: |-
+        id(${id}_current_multiply) = x;
+
+# Relay State LED
+output:
+  - platform: esp8266_pwm
+    id: ${id}_state_led
+    pin:
+      number: GPIO13
+      inverted: true
+
+light:
+  - platform: binary
+    output: ${id}_state_led
+    id: ${id}_led
+
+button:
+  - platform: restart
+    name: "${comment} Restart"
+  - platform: factory_reset
+    name: "${comment} Restart with Factory Default Settings"

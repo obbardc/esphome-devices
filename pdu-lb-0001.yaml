@@ -1,0 +1,6 @@
+substitutions:
+  name: pdu-lb-0001
+  comment: PDU-LB-0001
+  id: pdu_lb_0001
+
+<<: !include pdu-local-bytes.yaml
