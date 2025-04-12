@@ -17,6 +17,13 @@ time:
     timezone: !secret timezone
 
 wifi:
+  # TODO: Make this more obvious
+  # Use manual_ip when programming a device by its ip and not hostname, useful when changing hostname
+  #manual_ip:
+  #  static_ip: 192.168.1.113
+  #  gateway: 192.168.1.254
+  #  subnet: 255.255.255.0
+
   networks:
   # Highest priority network is chosen first; e.g backup SSID is first.
   #

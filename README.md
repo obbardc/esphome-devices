@@ -72,6 +72,9 @@ $ docker run -it \
 
 
 ### Change a device's hostname
+
+This is old. See the commented out section `manual_ip` in `base.yaml`.
+
 ```
 esphome:
   # New hostname
