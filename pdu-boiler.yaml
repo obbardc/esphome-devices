@@ -1,0 +1,6 @@
+substitutions:
+  name: pdu-boiler
+  comment: pdu boiler
+  id: pdu_boiler
+
+<<: !include pdu-sonoff-basic.yaml
