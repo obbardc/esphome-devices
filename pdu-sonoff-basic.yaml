@@ -7,6 +7,11 @@
 esphome:
   name: ${name}
   comment: ${comment}
+  # Turn on Blue status LED at boot.
+  on_boot:
+    priority: -100
+    then:
+    - output.turn_on: ${id}_status_led
 
 esp8266:
   board: esp8285
@@ -27,14 +32,12 @@ binary_sensor:
         then:
           switch.toggle: ${id}_relay
 
-# light:
-#   - name: "${comment} Status LED"
-#     id: ${id}_status
-#     platform: gpio
-#     internal: True
-#     pin:
-#       number: GPIO13
-#       inverted: True
+output:
+  - id: ${id}_status_led
+    platform: gpio
+    pin:
+      number: GPIO13
+      inverted: True
 
 # The relay switches on the red side of the LED when active.
 switch:
