@@ -70,6 +70,13 @@ $ docker run -it \
   pdu-s26-0001.yaml
 ```
 
+### Upload over Hotspot Connection
+
+If you connect to a device over its hotspot, e.g. the captive portal, you can't
+directly upload firmware. You must go to `192.168.4.1`, connect the device to your
+local Wi-Fi, then connect to the same Wi-Fi and upload usign the `HTTP OTA`
+instructions above...
+
 
 ### Change a device's hostname
 
